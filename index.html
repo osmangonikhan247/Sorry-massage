@@ -19,6 +19,7 @@
             background: linear-gradient(120deg, #ff9a9e, #fad0c4);
             text-align: center;
             padding: 20px;
+            overflow: hidden;
         }
         .container {
             background: rgba(255, 255, 255, 0.2);
@@ -29,6 +30,8 @@
             width: 400px;
             backdrop-filter: blur(10px);
             animation: fadeIn 1.5s ease-in-out;
+            position: relative;
+            z-index: 2;
         }
         h1 {
             font-size: 28px;
@@ -46,6 +49,22 @@
             display: block;
             margin-top: 10px;
         }
+
+        /* Floating Hearts */
+        .floating-heart {
+            position: absolute;
+            color: red;
+            font-size: 24px;
+            animation: floatUp 5s infinite linear;
+            opacity: 0.7;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+
+        /* Animated Button */
         .button {
             margin-top: 20px;
             padding: 12px 24px;
@@ -56,10 +75,26 @@
             border-radius: 8px;
             cursor: pointer;
             transition: 0.3s;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
         }
         .button:hover {
             background: darkred;
             transform: scale(1.1);
+        }
+        .button:active {
+            animation: shake 0.5s, glow 1s infinite alternate;
+        }
+
+        /* Shake Effect */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        /* Glowing Effect */
+        @keyframes glow {
+            from { box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
+            to { box-shadow: 0 0 20px rgba(255, 0, 0, 0.9); }
         }
 
         /* MODAL STYLES */
@@ -125,12 +160,16 @@
     </style>
 </head>
 <body>
+    <audio id="loveSong" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="container">
         <h1>I'm Really Sorry, My Love</h1>
         <p>My dearest wife, I never meant to hurt you. You mean the world to me, and I regret any pain I’ve caused you.</p>
         <p>Please forgive me, my love. You are my heart, my soul, and my happiness. 💕</p>
         <span class="heart">❤️</span>
-        <button class="button" onclick="openModal()">Forgive Me?</button>
+        <button class="button" onclick="openModal(); playMusic();">Forgive Me?</button>
     </div>
 
     <!-- MODAL -->
@@ -150,6 +189,27 @@
         function closeModal() {
             document.getElementById("myModal").style.display = "none";
         }
+        function playMusic() {
+            document.getElementById("loveSong").play();
+        }
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("floating-heart");
+            heart.innerHTML = "❤️";
+            document.body.appendChild(heart);
+            
+            let size = Math.random() * 20 + 10; 
+            heart.style.fontSize = `${size}px`;
+            heart.style.left = `${Math.random() * 100}vw`;
+            heart.style.animationDuration = `${Math.random() * 3 + 2}s`;
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        setInterval(createHeart, 500);
     </script>
 </body>
 </html>
