@@ -50,7 +50,7 @@
             font-size: 24px;
             animation: floatUp 5s infinite linear;
             opacity: 0.7;
-            z-index: 1; /* Keeps hearts behind everything */
+            z-index: 1;
         }
         @keyframes floatUp {
             0% { transform: translateY(0); opacity: 1; }
@@ -108,7 +108,7 @@
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 3; /* Ensures modal is in front */
+            z-index: 3;
         }
         .modal-content {
             background: #fff;
@@ -162,9 +162,9 @@
     </style>
 </head>
 <body>
-    <!-- Love Me Like You Do song -->
-    <audio id="loveSong" loop>
-        <source src="https://www.mboxdrive.com/LoveMeLikeYouDo.mp3" type="audio/mpeg">
+    <!-- Background Song: "I Am Sorry, Don't Leave Me" -->
+    <audio id="backgroundSong" loop>
+        <source src="https://www.mboxdrive.com/I-Am-Sorry-Don%27t-Leave-Me.mp3" type="audio/mpeg">
     </audio>
 
     <div class="container">
@@ -172,7 +172,7 @@
         <p>My dearest wife, I never meant to hurt you. You mean the world to me, and I regret any pain I’ve caused you.</p>
         <p>Please forgive me, my love. You are my heart, my soul, and my happiness. 💕</p>
         <span class="heart">❤️</span>
-        <button class="button" onclick="openModal(); playMusic();">Forgive Me?</button>
+        <button class="button" onclick="playBackgroundMusic(); playMusic(); openModal();">Forgive Me?</button>
     </div>
 
     <!-- MODAL -->
@@ -192,8 +192,23 @@
         function closeModal() {
             document.getElementById("myModal").style.display = "none";
         }
+
         function playMusic() {
-            document.getElementById("loveSong").play();
+            let song = document.getElementById("loveSong");
+            let playPromise = song.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log("Music playing...");
+                }).catch(() => {
+                    alert("Tap the button again to allow music.");
+                });
+            }
+        }
+
+        function playBackgroundMusic() {
+            let bgSong = document.getElementById("backgroundSong");
+            bgSong.play();
         }
 
         function createHeart() {
