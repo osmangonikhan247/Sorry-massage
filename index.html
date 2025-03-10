@@ -163,8 +163,13 @@
 </head>
 <body>
     <!-- Background Song: "I Am Sorry, Don't Leave Me" -->
-    <audio id="backgroundSong" loop>
+    <audio id="backgroundSong">
         <source src="https://www.mboxdrive.com/I-Am-Sorry-Don%27t-Leave-Me.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Song "Love Me Like You Do" (plays after Forgive Me?) -->
+    <audio id="loveSong">
+        <source src="https://www.mboxdrive.com/Love-Me-Like-You-Do.mp3" type="audio/mpeg">
     </audio>
 
     <div class="container">
@@ -172,7 +177,7 @@
         <p>My dearest wife, I never meant to hurt you. You mean the world to me, and I regret any pain I’ve caused you.</p>
         <p>Please forgive me, my love. You are my heart, my soul, and my happiness. 💕</p>
         <span class="heart">❤️</span>
-        <button class="button" onclick="playBackgroundMusic(); playMusic(); openModal();">Forgive Me?</button>
+        <button class="button" onclick="startMusicAndShowPopup()">Forgive Me?</button>
     </div>
 
     <!-- MODAL -->
@@ -186,31 +191,36 @@
     </div>
 
     <script>
+        // Function to start both background music and show the modal
+        function startMusicAndShowPopup() {
+            // Play background song "I Am Sorry, Don't Leave Me"
+            var bgSong = document.getElementById("backgroundSong");
+            bgSong.play();
+
+            // Pause the background song after 25 seconds to play the main part
+            setTimeout(function() {
+                bgSong.pause();
+            }, 25000);  // Adjust this time as needed
+
+            // Show modal
+            openModal();
+
+            // Play "Love Me Like You Do" after clicking the button
+            var loveSong = document.getElementById("loveSong");
+            loveSong.play();
+        }
+
+        // Function to open the modal
         function openModal() {
             document.getElementById("myModal").style.display = "flex";
         }
+
+        // Function to close the modal
         function closeModal() {
             document.getElementById("myModal").style.display = "none";
         }
 
-        function playMusic() {
-            let song = document.getElementById("loveSong");
-            let playPromise = song.play();
-
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    console.log("Music playing...");
-                }).catch(() => {
-                    alert("Tap the button again to allow music.");
-                });
-            }
-        }
-
-        function playBackgroundMusic() {
-            let bgSong = document.getElementById("backgroundSong");
-            bgSong.play();
-        }
-
+        // Floating hearts effect
         function createHeart() {
             const heart = document.createElement("div");
             heart.classList.add("floating-heart");
@@ -227,6 +237,7 @@
             }, 5000);
         }
 
+        // Call the createHeart function at intervals to generate floating hearts
         setInterval(createHeart, 500);
     </script>
 </body>
